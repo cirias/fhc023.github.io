@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "学生信息管理系统－多浏览器支持（黑科技）"
-date:   2014-07－03 20:59:07
+date:   2014-07-03 20:59:07
 categories: hack
 ---
 
