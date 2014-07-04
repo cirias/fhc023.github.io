@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "学生信息管理系统－黑科技"
+title:  '学生信息管理系统－黑科技'
 date:   2014-07-03 20:59:07
 categories: hack
 ---
@@ -24,17 +24,19 @@ categories: hack
 
 ## 使用
 
-1. 选中下面所有代码，拖至浏览器书签栏，形成新书签。
+1. <a class="btn" id="page_hack_js">请把我拖到书签栏</a> *或者* 复制下面所有代码，并保存成书签。
 
 2. 进入**并登录**[学生信息管理系统][lnk-school-page]。
 
 3. 点击刚才新建的书签，于是奇迹自然就发生了……
 
+*PS:* Safari浏览器请务必用拖的，不要复制。
+
 {% highlight javascript %}
-javascript:(function(a,b,c){function d(){l.id="mask",l.style.position="absolute",l.style.zIndex="1",l.style.width=a.body.scrollWidth+"px",l.style.height=a.body.scrollHeight+"px",l.style.top="0px",l.style.left="0px",l.style.background="#000",l.style.filter="alpha(opacity=40)",l.style.opacity="0.40",k.appendChild(l),a.lastChild.appendChild(k)}function e(){a.lastChild.removeChild(k)}function f(a){c.alert(a)}function g(a,c){var d=b.createElement("SCRIPT");d.setAttribute("type","text/javascript"),d.setAttribute("src",j[c]),a.appendChild(d)}function h(a,b,d){var e=50;setTimeout(function(){c[a]?d():0>b?d("Error: timeout."):h(a,b-e,d)},e)}function i(a,b,c,d){g(a,b),h(b+"_loaded",c,d)}if(!c.hacking){c.hacking=!0;var j={prototype:"http://fhc023.github.io/stuff/school-page-hack/prototype.js",jquery:"http://fhc023.github.io/stuff/school-page-hack/jquery-1.3.2.min.js"},k=a.createElement("body"),l=a.createElement("div"),m=b.getElementsByTagName("HEAD")[0];d(),i(m,"prototype",5e3,function(a){a?(f(a),location.reload()):i(m,"jquery",5e3,function(a){if(a)f(a),location.reload();else{var d=c.jQuery.noConflict();c.$=function(a){if(arguments.length>1){for(var d=0,e=[],f=arguments.length;f>d;d++)e.push($(arguments[d]));return e}return"string"==typeof a&&(a=b.getElementById(a)),c.Element.extend(a)},c.setUrl=function(a,b){d("#urlName").val(a),d("#urlAdress").val(b);var c=d("#setURLName").serialize();d.ajax({type:"POST",url:"/loadFunctionNamePage.jsp",data:c,success:function(){}})}}f("Hack success! "),e()})})}})(document,document.getElementsByName("contents")[0].contentDocument.getElementsByName("dtbar")[0].contentDocument,document.getElementsByName("contents")[0].contentDocument.getElementsByName("dtbar")[0].contentWindow);
+javascript:(function(a,b,c){function d(){l.id='mask',l.style.position='absolute',l.style.zIndex='1',l.style.width=a.body.scrollWidth+'px',l.style.height=a.body.scrollHeight+'px',l.style.top='0px',l.style.left='0px',l.style.background='#000',l.style.filter='alpha(opacity=40)',l.style.opacity='0.40',k.appendChild(l),a.lastChild.appendChild(k)}function e(){a.lastChild.removeChild(k)}function f(a){c.alert(a)}function g(a,c){var d=b.createElement('SCRIPT');d.setAttribute('type','text/javascript'),d.setAttribute('src',j[c]),a.appendChild(d)}function h(a,b,d){var e=50;setTimeout(function(){c[a]?d():0>b?d('Error: timeout.'):h(a,b-e,d)},e)}function i(a,b,c,d){g(a,b),h(b+'_loaded',c,d)}if(!c.hacking){c.hacking=!0;var j={prototype:'http://fhc023.github.io/stuff/school-page-hack/prototype.js',jquery:'http://fhc023.github.io/stuff/school-page-hack/jquery-1.3.2.min.js'},k=a.createElement('body'),l=a.createElement('div'),m=b.getElementsByTagName('HEAD')[0];d(),i(m,'prototype',5e3,function(a){a?(f(a),location.reload()):i(m,'jquery',5e3,function(a){if(a)f(a),location.reload();else{var d=c.jQuery.noConflict();c.$=function(a){if(arguments.length>1){for(var d=0,e=[],f=arguments.length;f>d;d++)e.push($(arguments[d]));return e}return'string'==typeof a&&(a=b.getElementById(a)),c.Element.extend(a)},c.setUrl=function(a,b){d('#urlName').val(a),d('#urlAdress').val(b);var c=d('#setURLName').serialize();d.ajax({type:'POST',url:'/loadFunctionNamePage.jsp',data:c,success:function(){}})}}f('Hack success! '),e()})})}})(document,document.getElementsByName('contents')[0].contentDocument.getElementsByName('dtbar')[0].contentDocument,document.getElementsByName('contents')[0].contentDocument.getElementsByName('dtbar')[0].contentWindow);
 {% endhighlight %}
 
-
+<script type="text/javascript" src="/javascript/load_page_hack.js"></script>
 
 
 [lnk-school-page]:http://sam.sit.edu.cn
