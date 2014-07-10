@@ -2,7 +2,7 @@
 layout: post
 title: "Bash Commands"
 description: ""
-category:
+category: notes
 tags: []
 ---
 {% include JB/setup %}
