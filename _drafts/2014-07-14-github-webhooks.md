@@ -39,11 +39,18 @@ if (signature != req.header('X-Hub-Signature')) return;
 ### 部署脚本
 ```bash
 #!/bin/bash
+# 更新并重启项目，记录日志到deploy.log文件。
+
+data=$(date "+%Y-%m-%d %H:%M:%S")
+echo ${data}" Runing deploy script..." >> deploy.log
 
 cd ~/workspace/:repo/ &&
-forever stop &&
-git pull origin production &&
-forever start app.js
+forever stop >> deploy.log &&
+git pull origin production >> deploy.log &&
+forever start app.js >> deploy.log
+
+data=$(date "+%Y-%m-%d %H:%M:%S")
+echo ${data}" Finished deploy script..." >> deploy.log
 
 exit 0
 ```
