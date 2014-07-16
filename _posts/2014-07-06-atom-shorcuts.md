@@ -8,13 +8,15 @@ tags: []
 {% include JB/setup %}
 
 ### Atom原生快捷键
-  * cmd shift p  : 搜索插件（命令） 
+  * cmd shift p  : 搜索插件（命令）
   * ctrl shift c : 复制当前文件全路径
   * cmd p        : 在当前项目中搜索文件
   * cmd r        : 在当前文件中搜索函数
   * cmd d        : 向下选中与当前选中项相同的内容
   * ctrl g       : 跳转指定行
   * ctrl shift k : 删除整行
+  * shift alt up : 复制光标到上一行
+  * shift alt down : 复制光标到下一行
 
 ### Atom自带插件快捷键
   * ctrl shift m : markdown预览
