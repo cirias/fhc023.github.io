@@ -3,7 +3,7 @@ layout: post
 title: "自动部署github项目"
 description: ""
 category: notes
-tags: []
+tags: [github]
 ---
 {% include JB/setup %}
 
