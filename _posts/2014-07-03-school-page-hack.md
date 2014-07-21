@@ -30,8 +30,6 @@ categories: hack
 
 不再为切换浏览器而烦恼！
 
-~~*PS:*目前仅支持[学生信息管理系统][lnk-school-page]。~~
-
 ------
 
 ## 使用
