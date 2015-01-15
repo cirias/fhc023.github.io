@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<!-- saved from url=(0065)http://html5slides.googlecode.com/svn/trunk/template/index.html#1 -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Presentation</title>
+
+    <meta charset="utf-8">
+    <script src="./Presentation_files/slides.js"></script>
+  <style>
+    /* Your individual styles here, or just use inline styles if that’s
+       what you want. */
+    
+    
+  </style><meta name="viewport" content="width=1100,height=750"><meta name="apple-mobile-web-app-capable" content="yes"></head>
+  
+  
+
+  <body style="display: none" class="loaded">
+
+    <section class="slides layout-regular template-default">
+      
+      <article>
+        <h1>
+          Albicilla User
+          <br>
+            —— Tips
+        </h1>
+        <p>
+          Sirius
+          <br>
+          Jan 15, 2015
+        </p>
+      </article>
+
+      <article>
+        <h1>
+          route处理
+        </h1>
+        <p>
+          如果需要做一张搜索页面。
+        </p>
+        <p>
+          要求能够通过筛选、排序搜索结果，
+          并且可以将搜索结果保存为书签。
+        </p>
+      </article>
+
+      <article>
+        <h3>
+          Controller划分
+        </h3>
+        <table>
+          <tr>
+            <th>
+              名字
+            <th>
+              功能
+          <tr>
+            <td>
+              SearchingCtrl
+            <td>
+              负责搜索
+          <tr>
+            <td>
+              FilterCtrl
+            <td>
+              负责操纵搜索结果
+        </table>
+      </article>
+
+      <article>
+        <h3>
+          让Url决定一切
+        </h3>
+        <p>
+          同一页面上的controller各自从url获取参数
+        </p>
+        <ul>
+          <li>SearchingCtrl获取参数以发送搜索请求</li>
+          <li>FilterCtrl获取参数以初始化控制状态，比如：当sort=1时，钩上sort checkbox</li>
+        </ul>
+        <p>
+          当搜索条件改变时，FilterCtrl只需要简单地以新参数reload，SeachingCtrl自动获取新要求的数据
+          Controller之间彼此并不知晓对方的存在
+        </p>
+      </article>
+
+      <article>
+        <h3>
+          如何获取参数
+        </h3>
+        <section>
+          <pre>
+angular.module('searching')
+  .controller('SearchingCtrl', function ($scope, $stateParams) {
+    $scope.keyword = $stateParams.keyword;
+  });
+          </pre>
+        </section>
+      </article>
+
+      <article>
+        <h1>
+          杜绝滥用controller
+        </h1>
+        <p>
+          一切围绕scope的controller，只能用来做两件事
+        </p>
+        <ul>
+          <li>初始化scope</li>
+          <li>添加操纵scope的方法</li>
+        </ul>
+      </article>
+
+      <article>
+        <p>
+          错误的用法
+        </p>
+        <section>
+          <pre>
+angular.module('searching').
+  controller('SearchingCtrl', function ($scope, $http) {
+    $http.get('http://localhost:3040/search/' + keyword).
+      success(...);
+  });
+          </pre>
+        </section>
+      </article>
+
+      <article>
+        <p>
+          应该这样
+        </p>
+        <section>
+          <pre>
+angular.module('searching').
+  value('apiAddress', 'http://localhost:3040/').
+  factory('ApiService', function (apiAddress) {
+    return {
+      search: function (keyword) {
+        return $http.get(apiAddress + 'search/' + keyword);
+      }
+    };
+  }).
+  controller('SearchingCtrl', function ($scope, ApiService) {
+    ApiService.search(keyword).
+      success(...);
+  });
+          </pre>
+        </section>
+      </article>
+
+      <article>
+        <h1>用directive将scope与DOM连接起来</h1>
+      </article>
+
+      <article>
+        <p>
+          我们有这样一个controller
+        </p>
+        <section>
+          <pre>
+angular.module('searching').
+  controller('SearchingCtrl', function ($scope, ApiService) {
+    $scope.search = function (keyword) {
+      ApiService.search(keyword).
+        success(...);
+    };
+  });
+          </pre>
+        </section>
+      </article>
+
+      <article>
+        <p>
+          我们想象着可以这样搜索
+        </p>
+        <section>
+          <pre>
+&lt;input&nbsp;ng-model="keyword"&nbsp;ng-enter="search(keyword)"&gt;
+          </pre>
+        </section>
+      </article>
+
+      <article>
+        <p>
+          于是我们写了个directive
+        </p>
+        <section>
+          <pre>
+angular.module('searching')
+  .directive('ngEnter', function () {
+    return function(scope, element, attrs) {
+      element.bind('keydown keypress', function(event) {
+        if(event.which === 13) {
+          scope.$apply(function(){
+            scope.$eval(attrs.ngEnter);
+          });
+
+          event.preventDefault();
+        }
+      });
+    };
+  });
+          </pre>
+        </section>
+      </article>
+
+      <article>
+        <h1>何为provider</h1>
+        <p>
+          有一天，我们希望能方便地在producion与development环境之间切换
+        </p>
+      </article>
+
+      <article>
+        <section>
+          <pre>
+angular.module('searching')
+  .provider('apiService', function () {
+    var environment = 'development';
+
+    this.setEnv = function (env) {
+      environment = env;
+    };
+
+    this.$get = ["apiAddress", function (apiAddress) {
+      return ApiService(apiAddress[env]);
+    }];
+  });
+          </pre>
+        </section>
+      </article>
+
+      <article>
+        <p>
+          然后我们只需要这样配置
+        </p>
+        <section>
+          <pre>
+angular.module('searching')
+  .config(function (apiServiceProvider) {
+    apiServiceProvider.setEnv('production');
+  });
+          </pre>
+        </section>
+      </article>
+
+      <article>
+        <h1>通过service建立配置文件</h1>
+        <p>
+          利用constant配置在config期间也能注入的变量
+        </p>
+      </article>
+
+      <article>
+        <h1>filter的灵活运用</h1>
+      </article>
+
+      <article>
+        <section>
+          <pre>
+&lt;input&nbsp;type="checkbox"&nbsp;ng-model="item.selected"&nbsp;
+  ng-repeat="item&nbsp;in&nbsp;items"&gt;
+          </pre>
+        </section>
+        <p>
+          如何才能方便地获取所有选中的item呢
+        </p>
+        <p>
+          只要这样
+        </p>
+        <section>
+          <pre>
+selected items: {{ items | filter:{selected:true} }}
+          </pre>
+        </section>
+        <p>
+          或者在controller里注入$filterFilter
+        </p>
+        <section>
+          <pre>
+var selectedItems = $filterFilter($scope.items, {selected:true});
+          </pre>
+        </section>
+      </article>
+
+      <article>
+        <h1>翻译的实现</h1>
+      </article>
+
+      <article>
+        <p>
+          在运行期间监听ui-router的状态转换事件，根据目标状态动态加载翻译
+        </p>
+        <section>
+          <pre>
+app.run(function ($rootScope, $translate, $translatePartialLoader) {
+  $rootScope.$on('$stateChangeSuccess', function(e, toState) {
+    $translatePartialLoader.addPart(toState.name.split('.')[0]);
+    $translate.refresh();
+  });
+});
+          </pre>
+        </section>
+      </article>
+
+      <article>
+        <h3>
+          Thank you!
+        </h3>
+      </article>
+
+    <div class="slide-area" id="prev-slide-area"></div><div class="slide-area" id="next-slide-area"></div></section>
+
+  
+
+<link rel="stylesheet" type="text/css" href="./Presentation_files/css"><link rel="stylesheet" type="text/css" href="./Presentation_files/styles.css"><script type="text/javascript" src="./Presentation_files/prettify.js"></script></body></html>
